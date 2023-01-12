@@ -1,0 +1,19 @@
+.container {
+    display:flex;
+    padding:20px 30px;
+}
+
+.uperContainer{
+    display: block;
+    text-align: center;
+}
+
+
+
+/* @media  (max-width: 768px) {
+    .container {
+        flex-direction:column;    
+    }
+    
+
+} */

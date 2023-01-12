@@ -1,0 +1,13 @@
+.container {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.loginform{
+    display:flex;
+    flex-direction:column;
+    text-align: center;
+
+}
