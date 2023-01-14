@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {  
+import {
   LightModeOutlined,
   DarkModeOutlined,
   Menu as MenuIcon,
@@ -12,28 +12,27 @@ import { useDispatch } from "react-redux";
 import { setMode } from "state";
 import profileImage from "assets/profile.jpeg";
 import {
-    AppBar,
-    Button,
-    Box,
-    Typography,
-    IconButton,
-    InputBase,
-    Toolbar,
-    Menu,
-    MenuItem,
-    useTheme
+  AppBar,
+  Button,
+  Box,
+  Typography,
+  IconButton,
+  InputBase,
+  Toolbar,
+  Menu,
+  MenuItem,
+  useTheme,
+  Stack,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const Navbar = ({
-    setIsSidebarOpen,
-    isSidebarOpen,
-}) => {
+const Navbar = ({ setIsSidebarOpen, isSidebarOpen }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
 
-  const changeMode = ()=> {
-    dispatch(setMode())
-  }
+  const changeMode = () => {
+    dispatch(setMode());
+  };
 
   return (
     <AppBar
@@ -48,20 +47,8 @@ const Navbar = ({
         <FlexBetween>
           <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
             <MenuIcon />
-          </IconButton>
-          <FlexBetween
-            backgroundColor={theme.palette.background.alt}
-            borderRadius="9px"
-            gap="3rem"
-            p="0.1rem 1.5rem"
-          >
-            <InputBase placeholder="Serach ..." />
-            <IconButton>
-              <Search />
-            </IconButton>
-          </FlexBetween>
+          </IconButton>         
         </FlexBetween>
-
 
         {/*RIGHT SIDE */}
         <FlexBetween gap="1.5rem">

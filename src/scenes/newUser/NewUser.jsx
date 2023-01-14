@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useState , useEffect} from "react";
 import "./newUser.css"
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,6 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
-import Loader from "components/Loader";
 import Message from "components/Message";
 import {resetUser, addUser } from "slices/userSlice";
 import OutlinedInput from "@mui/material/OutlinedInput";
@@ -42,15 +41,6 @@ const NewUser = () => {
     event.preventDefault();
   };
   
-
-
-//   useEffect(() => {
-   
-//       setAdmin(user.isAdmin);
-//       setName(user.name);
-//       setEmail(user.email);
-    
-//   }, [dispatch, id, user]);
 
   useEffect(() => {
     return () => {

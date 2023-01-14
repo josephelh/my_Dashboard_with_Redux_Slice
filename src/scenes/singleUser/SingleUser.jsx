@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./singleUser.css";
 import Checkbox from "@mui/material/Checkbox";
 import { useNavigate, useParams } from "react-router-dom";
@@ -16,8 +16,7 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-import QRCode from "react-qr-code";
-import * as htmlToImage from 'html-to-image';
+
 
 const SingleUser = () => {
   const [name, setName] = useState("");
@@ -32,21 +31,19 @@ const SingleUser = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const qrRef = createRef();
 
   // show password and confirmPassword handlers
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword((show) => !show);
   const handleMouseDownConfirmPassword = (event) => {
     event.preventDefault();
   };
 
-  const { user } = useSelector((state) => state.users);
+  const {loading, error, user } = useSelector((state) => state.users);
 
   useEffect(() => {
     if (!user || user._id !== id) {
@@ -81,19 +78,15 @@ const SingleUser = () => {
       navigate("/utilisateurs");
     }
   };
-
-  async function handleDownload() {
-    const qrCodeImage = await htmlToImage.toPng(qrRef.current);
-    
-    const downloadLink = document.createElement('a');
-    downloadLink.href = qrCodeImage;
-    downloadLink.download = `${user.name}.png`;
-    downloadLink.click();
-  }
   return (
     <div className="uperContainer">
       <h2>Modifier l'utilisateur : {user?.name ?? ""} </h2>
       {message && <Message variant="error">{message}</Message>}
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="error">{error}</Message>
+      ) : (
       <Stack
         component="form"
         onSubmit={submitHandler}
@@ -187,24 +180,7 @@ const SingleUser = () => {
             </div>
           </div>
 
-          <div className="buttonContainer">
-            <div ref={qrRef} style={{ background: "white", padding: "16px" }}>
-              <QRCode value={id} />              
-            </div>
-            <Button
-              variant="contained"
-              style={{
-                width: "70%",
-                color: "white",
-                paddingTop: "10px",
-                paddingBottom: "10px",
-                fontSize: "12px",
-              }}
-              color="success"
-              onClick={handleDownload}
-            >
-              Download QR
-            </Button>
+          <div className="buttonContainer">            
             <Button
               variant="contained"
               style={{
@@ -222,6 +198,7 @@ const SingleUser = () => {
           </div>
         </div>
       </Stack>
+      )}
     </div>
   );
 };

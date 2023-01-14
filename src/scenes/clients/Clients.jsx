@@ -1,78 +1,49 @@
 import React, { useEffect, useState } from "react";
-import "./products.css";
+import "./clients.css";
 import { useSelector, useDispatch } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { Button, IconButton, InputBase, Stack, useTheme } from "@mui/material";
 import Loader from "components/Loader";
-import { useNavigate } from "react-router-dom";
 import Message from "components/Message";
-import { fetchProducts } from "slices/productSlice";
-import {
-  createProduct,
-  deleteProduct,
-  resetSuccessCreate,
-  resetSuccessDelete,
-} from "slices/singleProductSlice";
+import { fetchClients, deleteClient , resetSuccessDelete, resetClient } from "slices/clientSlice";
 import { Search } from "@mui/icons-material";
 import FlexBetween from "components/FlexBetween";
-import { Button, IconButton, InputBase, Stack, useTheme } from "@mui/material";
 
-const Products = () => {
+const Clients = () => {
   const [keyword, setKeyword] = useState("");
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, error, products } = useSelector((state) => state.products);
-  const productCreate = useSelector((state) => state.product);
-  const {
-    successCreate,
-    createdProductId,
-  } = productCreate;
-  const {
-    loading: loadingdelete,
-    error: errordelete,
-    successDelete,
-  } = useSelector((state) => state.product);
+  const { clients, loading, error, successDelete } = useSelector((state) => state.clients);
 
   useEffect(() => {
-    if (successCreate) {
-      navigate(`/products/newproduct/${createdProductId}`);
-    } else {
-      dispatch(fetchProducts(keyword));
-      dispatch(resetSuccessCreate());
+    dispatch(resetClient);
+    dispatch(fetchClients(keyword));
+    if (resetSuccessDelete){
+      dispatch(fetchClients());
+      dispatch(resetSuccessDelete);
     }
-    if (successDelete) {
-      dispatch(fetchProducts(keyword));
-      dispatch(resetSuccessDelete());
-    }
-  }, [
-    dispatch,
-    navigate,
-    createdProductId,
-    successCreate,
-    successDelete,
-    keyword,
-  ]);
+  }, [dispatch, keyword, successDelete]);
 
   const deleteHandler = (id) => {
     if (window.confirm("ete vous sur?")) {
-      dispatch(deleteProduct(id));
+      dispatch(deleteClient(id));
     }
   };
 
-  const createProductHandler = () => {
-    dispatch(createProduct());
+  const navigateToNewClient = () => {
+    navigate("/clients/newclient");
   };
 
-  // Search Submit handler
   const submitHandler = (e) => {
     e.preventDefault();
     if (keyword.trim()) {
-      navigate(`/products/search?keyword=${keyword}`);
+      navigate(`/clients/search?keyword=${keyword}`);
     } else {
-      navigate("/products");
+      navigate("/clients");
     }
   };
 
@@ -80,29 +51,24 @@ const Products = () => {
     { field: "_id", hide: true },
     {
       field: "name",
-      flex: 2,
-      headerName: "Product",
-      width: 200,
+      flex: 1,
+      headerName: "Name",
+    },
+    { field: "address", headerName: "Address", flex: 1 },
+    {
+      field: "phone",
+      headerName: "Phone",
+      flex: 1,
+    },
+    {
+      field: "user.name",
+      headerName: "Add By",
+      flex: 1,
       renderCell: (params) => {
-        return (
-          <div className="productListItem">
-            <img className="productListImg" src={params.row.image} alt="" />
-            {params.row.name}
-          </div>
-        );
+        return params.row.user.name;
       },
     },
-    { field: "countInStock", align: "center", headerName: "Stock", flex: 1 },
-    {
-      field: "price",
-      headerName: "Price",
-      flex: 1,
-    },
-    {
-      field: "brand",
-      headerName: "Brand",
-      flex: 1,
-    },
+
     {
       field: "action",
       headerName: "Action",
@@ -110,7 +76,7 @@ const Products = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/products/singleproduct/" + params.row._id}>
+            <Link to={"/clients/singleclient/" + params.row._id}>
               <button className="productListEdit">Edit</button>
             </Link>
             <DeleteForeverIcon
@@ -126,7 +92,7 @@ const Products = () => {
   return (
     <div
       style={{
-        height: "77vh",
+        height: "75vh",
         marginRight: "20px",
         marginLeft: "20px",
         marginTop: "20px",
@@ -145,12 +111,13 @@ const Products = () => {
             marginBottom: "20px",
             fontSize: "14px",
           }}
-          onClick={createProductHandler}
+          onClick={navigateToNewClient}
         >
-          Créer Un Produit
+          Nouveaux Client
         </Button>
         <Stack
           component="form"
+          dosplay="flex"
           gap="3rem"
           p="0.1rem 1.5rem"
           onSubmit={submitHandler}
@@ -168,8 +135,7 @@ const Products = () => {
           </FlexBetween>
         </Stack>
       </FlexBetween>
-      {loadingdelete ? <Loader /> : null}
-      {errordelete && <Message variant="error">{errordelete.message}</Message>}
+
       {loading ? (
         <Loader />
       ) : error ? (
@@ -178,7 +144,7 @@ const Products = () => {
         <DataGrid
           height={100}
           getRowId={(row) => row._id}
-          rows={products ?? []}
+          rows={clients ?? []}
           columns={columns}
           rowsPerPageOptions={[10, 15, 20]}
           pageSize={10}
@@ -188,4 +154,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Clients;

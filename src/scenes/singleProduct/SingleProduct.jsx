@@ -115,6 +115,11 @@ const SingleProduct = () => {
       <h2>Modifier Votre Produit</h2>
 
       <div className="container">
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="error">{error}</Message>
+      ) : (
         <Stack
           component="form"
           onSubmit={submitHandler}
@@ -228,6 +233,7 @@ const SingleProduct = () => {
             Mettre à Jour
           </Button>
         </Stack>
+      )}
       </div>
     </div>
   );

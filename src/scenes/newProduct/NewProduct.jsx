@@ -27,10 +27,7 @@ const NewProduct = () => {
 
 
   const newProduct = useSelector((state) => state.product);
-  const {
-    loading: loadingCreate,
-    error: errorCreate,
-    successCreate,
+  const { loading, error,    
     successUpdate,
     product,
   } = newProduct;
@@ -117,6 +114,11 @@ const NewProduct = () => {
       <h2>Modifier Votre Produit</h2>
 
       <div className="container">
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="error">{error}</Message>
+      ) : (
         <Stack
           component="form"
           onSubmit={submitHandler}
@@ -230,6 +232,7 @@ const NewProduct = () => {
             Mettre à Jour
           </Button>
         </Stack>
+      )}
       </div>
     </div>
   );
