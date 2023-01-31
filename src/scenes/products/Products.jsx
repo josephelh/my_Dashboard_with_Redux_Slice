@@ -183,7 +183,7 @@ const Products = () => {
         <DataGrid
           height={100}
           getRowId={(row) => row._id}
-          rows={products?.products}
+          rows={products?.products ?? []}
           columns={columns}
           rowCount={products?.total || 0}
           rowsPerPageOptions={[15, 50, 100]}
