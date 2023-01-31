@@ -26,8 +26,10 @@ import {
   CalendarMonthOutlined,
   AdminPanelSettingsOutlined,
   TrendingUpOutlined,
-  PieChartOutlined,
+  PieChartOutlined,  
 } from "@mui/icons-material";
+import InventoryIcon from '@mui/icons-material/Inventory';
+import GroupsIcon from '@mui/icons-material/Groups';
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
@@ -39,12 +41,12 @@ const navItems = [
     icon: <HomeOutlined />,
   },
   {
-    text: "Client Facing",
+    text: "Workers & Clients",
     icon: null,
   },
   {
     text: "Products",
-    icon: <ShoppingCartOutlined />,
+    icon: <InventoryIcon />,
   },
   {
     text: "Utilisateurs",
@@ -52,15 +54,15 @@ const navItems = [
   },
   {
     text: "clients",
-    icon: <PublicOutlined />,
+    icon: <GroupsIcon />,
   },
   {
-    text: "Statistiques",
+    text: "Manage Orders",
     icon: null,
   },
   {
-    text: "Overview",
-    icon: <PointOfSaleOutlined />,
+    text: "Orders",
+    icon: <ShoppingCartOutlined />,
   },
   {
     text: "Daily",

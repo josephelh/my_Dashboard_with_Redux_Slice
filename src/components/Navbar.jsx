@@ -6,6 +6,7 @@ import {
   Search,
   SettingsOutlined,
   ArrowDropOutlined,
+  ArrowDropDownOutlined,
 } from "@mui/icons-material";
 import FlexBetween from "components/FlexBetween";
 import { useDispatch } from "react-redux";
@@ -17,18 +18,20 @@ import {
   Box,
   Typography,
   IconButton,
-  InputBase,
   Toolbar,
   Menu,
   MenuItem,
   useTheme,
-  Stack,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
-const Navbar = ({ setIsSidebarOpen, isSidebarOpen }) => {
+const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isOpen = Boolean(anchorEl);
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
 
   const changeMode = () => {
     dispatch(setMode());
@@ -63,7 +66,7 @@ const Navbar = ({ setIsSidebarOpen, isSidebarOpen }) => {
             <SettingsOutlined sx={{ fontSize: "25px" }} />
           </IconButton>
 
-          {/* <FlexBetween>
+          <FlexBetween>
             <Button
               onClick={handleClick}
               sx={{
@@ -90,13 +93,7 @@ const Navbar = ({ setIsSidebarOpen, isSidebarOpen }) => {
                   sx={{ color: theme.palette.secondary[100] }}
                 >
                   {user.name}
-                </Typography>
-                <Typography
-                  fontSize="0.75rem"
-                  sx={{ color: theme.palette.secondary[200] }}
-                >
-                  {user.occupation}
-                </Typography>
+                </Typography>                
               </Box>
               <ArrowDropDownOutlined
                 sx={{ color: theme.palette.secondary[300], fontSize: "25px" }}
@@ -110,7 +107,7 @@ const Navbar = ({ setIsSidebarOpen, isSidebarOpen }) => {
             >
               <MenuItem onClick={handleClose}>Log Out</MenuItem>
             </Menu>
-          </FlexBetween> */}
+          </FlexBetween>
         </FlexBetween>
       </Toolbar>
     </AppBar>

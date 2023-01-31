@@ -12,6 +12,7 @@ import { Search } from "@mui/icons-material";
 import FlexBetween from "components/FlexBetween";
 
 const Clients = () => {
+  const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState("");
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -147,7 +148,8 @@ const Clients = () => {
           rows={clients ?? []}
           columns={columns}
           rowsPerPageOptions={[10, 15, 20]}
-          pageSize={10}
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       )}
     </div>

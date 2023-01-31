@@ -17,6 +17,8 @@ import NewUser from "scenes/newUser/NewUser";
 import Clients from "scenes/clients/Clients";
 import SingleClient from "scenes/singleClient/SingleClient";
 import NewClient from "scenes/newClient/NewClient";
+import Orders from "scenes/orders/Orders";
+import SingleOrder from "scenes/singleOrder/SingleOrder";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -56,6 +58,8 @@ function App() {
             <Route path="/clients/search" element={<Clients/>}/>
             <Route path="/clients/singleclient/:id" element={<SingleClient/>}/>
             <Route path="/clients/newclient" element={<NewClient/>}/>
+            <Route path="/orders" element={<Orders/>}/>
+            <Route path="/orders/orderdetails/:id" element={<SingleOrder/>}/>
           </Route>
         </Routes>
       </ThemeProvider>
