@@ -12,7 +12,7 @@ const initialState = {
   createdProductId: null,
 };
 
-const baseurl = 'http://localhost:5001';
+const baseurl = process.env.REACT_APP_API_BASE_URL;
 
 export const createProduct = createAsyncThunk(
   'product/createProduct',

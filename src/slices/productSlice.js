@@ -9,12 +9,21 @@ const initialState = {
 };
 
 
-const baseurl = 'http://localhost:5001';
+const baseurl = process.env.REACT_APP_API_BASE_URL;
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',  
-    async (keyword ="") => {     
-    const response = await axios.get(`${baseurl}/products?keyword=${keyword}`);      
+    async (params) => {    
+    const { page, pageSize,keyword } = params;
+    const config = {      
+      params: {
+        page,
+        pageSize,
+        keyword
+      }
+    };
+
+    const response = await axios.get(`${baseurl}/products`,config);      
     return response.data;
   }
 );

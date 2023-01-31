@@ -125,16 +125,17 @@ const SingleClient = () => {
                 background:"white",
                 height: "auto",
                 padding:"14px",
-                margin:"30px",
+                margin:"20px",
                 width: "100%",
               }}
             >
               <QRCode
                 // size={256}
-                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                style={{ height: "auto", maxWidth: "90%", width: "80%" }}
                 value={id}
                 // viewBox={`0 0 256 256`}
               />
+              <p style={{color:"black", fontSize:"1.5rem" , fontWeight:"700" , marginTop:"20px"}}>{name}</p>
             </div>
             <Button
               variant="contained"

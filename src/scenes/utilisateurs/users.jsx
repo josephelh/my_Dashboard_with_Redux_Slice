@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./users.css";
 import { useSelector, useDispatch } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
@@ -10,6 +10,8 @@ import Message from "components/Message";
 import { fetchUsers, resetUser, deleteUser , resetSuccessDelete } from "slices/userSlice";
 
 const Users = () => {
+  const [pageSize, setPageSize] = useState(10);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -105,7 +107,8 @@ const Users = () => {
           rows={users ?? []}
           columns={columns}
           rowsPerPageOptions={[10, 15, 20]}
-          pageSize={10}
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       )}
     </div>

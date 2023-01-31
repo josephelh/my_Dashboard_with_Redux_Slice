@@ -4,6 +4,7 @@ import productSlice from "slices/productSlice";
 import singleProductSlice from "slices/singleProductSlice";
 import userSlice from "slices/userSlice";
 import clientSlice from "slices/clientSlice";
+import orderSlice from "slices/orderSlice";
 
 const reducers = combineReducers({
   global: globalReducer,
@@ -11,6 +12,7 @@ const reducers = combineReducers({
   product : singleProductSlice,
   users : userSlice,
   clients : clientSlice,
+  orders: orderSlice,
  
 });
 

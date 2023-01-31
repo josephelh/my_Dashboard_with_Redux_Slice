@@ -16,6 +16,7 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
+import { useTheme } from "@mui/material";
 
 
 const SingleUser = () => {
@@ -28,6 +29,8 @@ const SingleUser = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [message, setMessage] = useState(null);
 
+
+  const theme = useTheme();
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -174,6 +177,7 @@ const SingleUser = () => {
             <div style={{ dispaly: "flex", marginBottom: "30px" }}>
               <p>Admin : </p>
               <Checkbox
+                color="success" 
                 checked={admin}
                 onChange={(e) => setAdmin(e.target.checked)}
               />

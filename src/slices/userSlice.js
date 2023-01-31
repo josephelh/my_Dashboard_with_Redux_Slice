@@ -9,6 +9,7 @@ const initialState = {
   user: null,
   loading: false,
   error: null,
+  successDelete : false,
 };
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
@@ -122,6 +123,9 @@ const userSlice = createSlice({
     resetUser: (state) => {     
         state.user = null;      
       },
+    resetSuccessDelete : (state) => {
+      state.successDelete= true;
+    }
   },
   extraReducers: (build) => {
     build.addCase(addUser.pending, (state) => {
@@ -140,6 +144,7 @@ const userSlice = createSlice({
     });
     build.addCase(deleteUser.fulfilled, (state, action) => {
       state.loading = false;
+      state.successDelete= true;
       state.users = state.users.filter((user) => user._id !== action.payload);
     });
     build.addCase(deleteUser.rejected, (state, action) => {
@@ -228,6 +233,7 @@ export const {
   udpateUserSuccess,
   udpateUserError,
   resetUser,  
+  resetSuccessDelete,
 } = userSlice.actions;
 
 export default userSlice.reducer;

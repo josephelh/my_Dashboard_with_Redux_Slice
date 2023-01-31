@@ -19,6 +19,8 @@ import FlexBetween from "components/FlexBetween";
 import { Button, IconButton, InputBase, Stack, useTheme } from "@mui/material";
 
 const Products = () => {
+  const [pageSize, setPageSize] = useState(15);
+  const [page, setPage] = useState(0);
   const [keyword, setKeyword] = useState("");
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -26,10 +28,7 @@ const Products = () => {
 
   const { loading, error, products } = useSelector((state) => state.products);
   const productCreate = useSelector((state) => state.product);
-  const {
-    successCreate,
-    createdProductId,
-  } = productCreate;
+  const { successCreate, createdProductId } = productCreate;
   const {
     loading: loadingdelete,
     error: errordelete,
@@ -37,14 +36,18 @@ const Products = () => {
   } = useSelector((state) => state.product);
 
   useEffect(() => {
+    const params = {
+      page: page,
+      pageSize: pageSize,
+      keyword: keyword,
+    };
+    dispatch(fetchProducts(params));
     if (successCreate) {
       navigate(`/products/newproduct/${createdProductId}`);
     } else {
-      dispatch(fetchProducts(keyword));
       dispatch(resetSuccessCreate());
     }
     if (successDelete) {
-      dispatch(fetchProducts(keyword));
       dispatch(resetSuccessDelete());
     }
   }, [
@@ -54,6 +57,8 @@ const Products = () => {
     successCreate,
     successDelete,
     keyword,
+    page,
+    pageSize,    
   ]);
 
   const deleteHandler = (id) => {
@@ -168,7 +173,7 @@ const Products = () => {
           </FlexBetween>
         </Stack>
       </FlexBetween>
-      {loadingdelete ? <Loader /> : null}
+      {loadingdelete ? (<Loader />) : (null)}
       {errordelete && <Message variant="error">{errordelete.message}</Message>}
       {loading ? (
         <Loader />
@@ -178,10 +183,17 @@ const Products = () => {
         <DataGrid
           height={100}
           getRowId={(row) => row._id}
-          rows={products ?? []}
+          rows={products.products}
           columns={columns}
-          rowsPerPageOptions={[10, 15, 20]}
-          pageSize={10}
+          rowCount={products.total || 0}
+          rowsPerPageOptions={[15, 50, 100]}
+          pagination
+          page={page}
+          pageSize={pageSize}
+          paginationMode="server"
+          sortingMode="server"
+          onPageChange={(newPage) => setPage(newPage)}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       )}
     </div>

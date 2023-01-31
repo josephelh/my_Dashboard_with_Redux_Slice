@@ -20,7 +20,7 @@ const SingleProduct = () => {
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
-  const [image, setImage] = useState(`${baseUrl}/uploads/profile.png`);
+  const [image, setImage] = useState("");
   const [brand, setBrand] = useState("");
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
@@ -47,6 +47,7 @@ const SingleProduct = () => {
       setBrand(newproduct.brand);
       setCountInStock(newproduct.countInStock);
       setDescription(newproduct.description);
+      setImage(newproduct.image);
     }
   }
   }, [dispatch, id,newproduct,successUpdate, navigate]);
