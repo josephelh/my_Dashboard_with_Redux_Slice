@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./singleOrder.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Button from "@mui/material/Button";
 import Loader from "components/Loader";
 import Message from "components/Message";
 import { fetchOrder } from "slices/orderSlice";
@@ -14,7 +13,6 @@ import Divider from "@mui/material/Divider";
 const SingleOrder = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const { order, loading, error } = useSelector((state) => state.orders);
   const date = new Date(order?.createdAt);
@@ -28,7 +26,7 @@ const SingleOrder = () => {
     if (!order || order._id !== id) {
       dispatch(fetchOrder(id));
     }
-  }, [dispatch, id]);
+  }, [dispatch, id, order]);
 
   const subTotal = order?.orderItems.reduce((acc, o) => acc + (o.price * o.qty), 0).toFixed(2)
 

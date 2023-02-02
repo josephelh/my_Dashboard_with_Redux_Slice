@@ -16,7 +16,6 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-import { useTheme } from "@mui/material";
 
 
 const SingleUser = () => {
@@ -30,7 +29,6 @@ const SingleUser = () => {
   const [message, setMessage] = useState(null);
 
 
-  const theme = useTheme();
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();

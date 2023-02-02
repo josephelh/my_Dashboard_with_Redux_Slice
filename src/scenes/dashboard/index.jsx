@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React from "react";
 import SalesBar from "components/SalesBar";
 import MonthlyProductOrders from "components/MonthlyProductOrders";
 

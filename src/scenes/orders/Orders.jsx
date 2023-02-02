@@ -7,7 +7,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Box, useTheme } from "@mui/material";
 import Loader from "components/Loader";
 import Message from "components/Message";
-import { fetchOrders } from "slices/orderSlice";
+import { fetchOrders, deleteOrder } from "slices/orderSlice";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 
 const Orders = () => {
@@ -34,11 +34,11 @@ const Orders = () => {
     dispatch(fetchOrders(params));
   }, [dispatch, page, pageSize, keyword, sort]);
 
-  //   const deleteHandler = (id) => {
-  //     if (window.confirm("ete vous sur?")) {
-  //       dispatch(deleteClient(id));
-  //     }
-  //   };
+    const deleteHandler = (id) => {
+      if (window.confirm("ete vous sur?")) {
+        dispatch(deleteOrder(id));
+      }
+    };
 
   //   const navigateToNewClient = () => {
   //     navigate("/clients/newclient");
@@ -156,7 +156,7 @@ const Orders = () => {
             </Link>
             <DeleteForeverIcon
               className="productListDelete"
-              //   onClick={() => deleteHandler(params.row._id)}
+                onClick={() => deleteHandler(params.row._id)}
             />
           </>
         );

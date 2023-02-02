@@ -38,7 +38,7 @@ const MonthlyProductOrders = () => {
     if (!data || year !== prevYear || month !== prevMonth) {
       dispatch(getProductOrderCountByMonth({ year, month }));
     }
-  }, [dispatch, data, year, month]);
+  }, [dispatch, data, year, month, prevYear, prevMonth]);
 
   return (
     <>
