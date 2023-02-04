@@ -22,10 +22,25 @@ const SingleOrder = () => {
   const hour = date.getHours();
   const minites = date.getMinutes();
 
+  const paidDate = new Date(order?.paidAt);
+  const PaidYear = paidDate.getFullYear();
+  const PaidMonth = paidDate.getMonth() + 1;
+  const PaidDay = paidDate.getDate();
+  const PaidHour = paidDate.getHours();
+  const PaidMinites = paidDate.getMinutes();
+
+  const deliveredDate = new Date(order?.deliveredAt);
+  const deliveredYear = deliveredDate.getFullYear();
+  const deliveredMonth = deliveredDate.getMonth() + 1;
+  const deliveredDay = deliveredDate.getDate();
+  const deliveredHour = deliveredDate.getHours();
+  const deliveredMinites = deliveredDate.getMinutes();
+
   useEffect(() => {
     if (!order || order._id !== id) {
       dispatch(fetchOrder(id));
     }
+    
   }, [dispatch, id, order]);
 
   const subTotal = order?.orderItems.reduce((acc, o) => acc + (o.price * o.qty), 0).toFixed(2)
@@ -50,6 +65,10 @@ const SingleOrder = () => {
       flex: 1,
       headerName: "Sub Total",
       headerClassName: "gridHeader",
+      renderCell: (params) => {
+        return `${(params.row.price * params.row.qty).toFixed(2)} $`;
+      },
+      
     },
   ];
 
@@ -100,31 +119,31 @@ const SingleOrder = () => {
             <div className="rightSideOrderDetails">
               <p className="rightSideOrderDetailsChild">Delivered</p>
               <p className="rightSideOrderDetailsChild">
-                : {order?.isDelivered ? "Yes" : "No" || ""}
+                : {order?.isDelivered ? `${deliveredYear}-${deliveredMonth}-${deliveredDay} at ${deliveredHour}:${deliveredMinites}` : "No" || ""}
               </p>
             </div>
             <div className="rightSideOrderDetails">
               <p className="rightSideOrderDetailsChild">Paid</p>
               <p className="rightSideOrderDetailsChild">
-                : {order?.isPaid ? "Yes" : "No" || ""}
+                : {order?.isPaid ? `${PaidYear}-${PaidMonth}-${PaidDay} at ${PaidHour}:${PaidMinites}` : "No" || ""}
               </p>
             </div>
             <div className="rightSideOrderDetails">
               <p className="rightSideOrderDetailsChild">Tax Price</p>
               <p className="rightSideOrderDetailsChild">
-                : {order?.taxPrice || ""}
+                : {`${order?.taxPrice.toFixed(2)}$` || ""}
               </p>
             </div>
             <div className="rightSideOrderDetails">
               <p className="rightSideOrderDetailsChild">Sub Total</p>
               <p className="rightSideOrderDetailsChild">
-                : {subTotal || ""}
+                : {`${subTotal}$` || ""}
               </p>
             </div>
             <div className="rightSideOrderDetails">
               <h4 className="rightSideOrderDetailsChild">Total</h4>
               <h3 className="rightSideOrderDetailsChild">
-                : {`${order?.totalPrice}$` || "$"}
+                : {`${order?.totalPrice.toFixed(2)}$` || "$"}
               </h3>
             </div>
           </Stack>

@@ -78,7 +78,7 @@ const Clients = () => {
         return (
           <>
             <Link to={"/clients/singleclient/" + params.row._id}>
-              <button className="productListEdit">Edit</button>
+              <button className="productListEdit">More..</button>
             </Link>
             <DeleteForeverIcon
               className="productListDelete"

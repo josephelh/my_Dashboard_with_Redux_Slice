@@ -8,10 +8,19 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { login } from "slices/userSlice";
 import "./login.css";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,6 +41,11 @@ const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login({email, password}));   
+  };
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   return (
@@ -59,12 +73,32 @@ const Login = () => {
               type="email"
               onChange={(e) => setEmail(e.target.value)}
             />
-            <TextField
+            {/* <TextField
               required
               id="outlined-required"
               label="Mot De Pass"
               onChange={(e) => setPassword(e.target.value)}
-            />
+            /> */}
+           
+            <OutlinedInput
+                id="outlined-adornment-password"
+                type={showPassword ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
 
             <Button
               variant="contained"

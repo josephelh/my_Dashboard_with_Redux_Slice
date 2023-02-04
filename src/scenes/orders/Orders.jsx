@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-// import "./clients.css";
 import { useSelector, useDispatch } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Box, useTheme } from "@mui/material";
 import Loader from "components/Loader";
@@ -20,7 +19,6 @@ const Orders = () => {
 
   const theme = useTheme();
   const dispatch = useDispatch();
-  //   const navigate = useNavigate();
 
   const { orders, loading, error } = useSelector((state) => state.orders);
 
@@ -40,19 +38,7 @@ const Orders = () => {
       }
     };
 
-  //   const navigateToNewClient = () => {
-  //     navigate("/clients/newclient");
-  //   };
-
-  //   const submitHandler = (e) => {
-  //     e.preventDefault();
-  //     if (keyword.trim()) {
-  //       navigate(`/clients/search?keyword=${keyword}`);
-  //     } else {
-  //       navigate("/clients");
-  //     }
-  //   };
-
+ 
   const columns = [
     { field: "_id", hide: true },
     {
@@ -152,7 +138,7 @@ const Orders = () => {
         return (
           <>
             <Link to={"/orders/orderdetails/" + params.row._id}>
-              <button className="productListEdit">Edit</button>
+              <button className="productListEdit">More..</button>
             </Link>
             <DeleteForeverIcon
               className="productListDelete"

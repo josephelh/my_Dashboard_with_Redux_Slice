@@ -13,28 +13,51 @@ import Loader from "components/Loader";
 import Message from "components/Message";
 import QRCode from "react-qr-code";
 import * as htmlToImage from "html-to-image";
+import { clientOrders, deleteOrder } from "slices/orderSlice";
+import { DataGrid } from "@mui/x-data-grid";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { Box, useTheme } from "@mui/material";
+import DataGridCustomToolbarNoSearch from "components/DataGridCustomToolbarNoSearch";
+import { Link } from "react-router-dom";
 
 const SingleClient = () => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
 
+  const [pageSize, setPageSize] = useState(15);
+  const [page, setPage] = useState(0);
+  
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const qrRef = createRef();
+  const theme = useTheme();
+
 
   const { error, loading, client } = useSelector((state) => state.clients);
+  const {
+    orders,
+    error: ordersError,
+    loading: ordersLoading,
+  } = useSelector((state) => state.orders);
 
   useEffect(() => {
+    const params = {
+      page: page,
+      pageSize: pageSize,
+      id: id,
+    };
     if (!client || client._id !== id) {
       dispatch(fetchClientDetails(id));
+      dispatch(clientOrders(params));
     } else {
       setName(client.name);
       setAddress(client.address);
       setPhone(client.phone);
     }
-  }, [dispatch, id, client]);
+  }, [dispatch, id, client, pageSize, page]);
 
 
   const submitHandler = (e) => {
@@ -51,6 +74,12 @@ const SingleClient = () => {
     navigate("/clients");
   };
 
+  const deleteHandler = (id) => {
+    if (window.confirm("ete vous sur?")) {
+      dispatch(deleteOrder(id));
+    }
+  };
+
   //QR code Image download handller
   async function handleDownload() {
     const qrCodeImage = await htmlToImage.toPng(qrRef.current);
@@ -61,7 +90,108 @@ const SingleClient = () => {
     downloadLink.click();
   }
 
+
+  const columns = [
+    { field: "_id", hide: true },
+    {
+      field: "user.name",
+      headerName: "Made by",
+      flex: 1,
+      renderCell: (params) => {
+        return params.row.user.name;
+      },
+    },
+    {
+      field: "orderItems",
+      hide: true,
+      flex: 3,
+      headerName: "Details",
+
+      renderCell: (params) => {
+        return (
+          <div
+            style={{ marginTop: "15px", marginBottom: "15px", width: "100%" }}
+          >
+            <table style={{ border: "1px solid gray", width: "100%" }}>
+              <thead>
+                <tr>
+                  <th style={{ textAlign: "left" }}>Name</th>
+                  <th style={{ textAlign: "left" }}>Quantity</th>
+                  <th style={{ textAlign: "left" }}>price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {params.row.orderItems.map((item, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{item.name}</td>
+                      <td>{item.qty}</td>
+                      <td>{item.price * item.qty}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        );
+      },
+    },    
+    {
+      field: "totalPrice",
+      flex: 1,
+      headerName: "Total",
+      renderCell: (params) => {
+        return `${params.row.totalPrice.toFixed(2)} $`;
+      },
+    },
+    {
+      field: "isPaid",
+      headerName: "Is Paid",
+      flex: 1,
+      renderCell: (params) => {
+        if (params.row.isPaid) {
+          return <div> Paid</div>;
+        } else {
+          return <div> Not Paid</div>;
+        }
+      },
+    },
+
+    {
+      field: "isDelivered",
+      headerName: "Delivered",
+      flex: 1,
+      renderCell: (params) => {
+        if (params.row.isDelivered) {
+          return <div> Deliverded</div>;
+        } else {
+          return <div> Not Delivered yet</div>;
+        }
+      },
+    },
+
+    {
+      field: "action",
+      headerName: "Action",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <>
+            <Link to={"/orders/orderdetails/" + params.row._id}>
+              <button className="productListEdit">Edit</button>
+            </Link>
+            <DeleteForeverIcon
+              className="productListDelete"
+              onClick={() => deleteHandler(params.row._id)}
+            />
+          </>
+        );
+      },
+    },
+  ];
+
   return (
+    <>
     <div className="uperContainer">
       <h2>Modifier Client : {client?.name ?? ""} </h2>
       {loading ? (
@@ -113,7 +243,7 @@ const SingleClient = () => {
               />
             </div>
             <div style={{ dispaly: "flex", marginBottom: "30px" }}>
-              <h3>Ajouter Par : {client?.user ?? ""}</h3>
+              <h3>Ajouter Par : {client?.user.name ?? ""}</h3>
             </div>
           </div>
 
@@ -172,7 +302,61 @@ const SingleClient = () => {
       </Stack>
       )}
     </div>
+    <Box
+      height="70vh"
+      sx={{
+        "& .MuiDataGrid-root": {
+          border: "none",
+        },
+        "& .MuiDataGrid-cell": {
+          borderBottom: "none",
+        },
+        "& .MuiDataGrid-columnHeaders": {
+          backgroundColor: theme.palette.background.alt,
+          color: theme.palette.secondary[100],
+          borderBottom: "none",
+        },
+        "& .MuiDataGrid-virtualScroller": {
+          backgroundColor: theme.palette.primary.light,
+        },
+        "& .MuiDataGrid-footerContainer": {
+          backgroundColor: theme.palette.background.alt,
+          color: theme.palette.secondary[100],
+          borderTop: "none",
+        },
+        "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+          color: `${theme.palette.secondary[200]} !important`,
+        },
+      }}
+    >
+      {ordersLoading ? (
+        <Loader />
+      ) : ordersError ? (
+        <Message variant="error">{error}</Message>
+      ) : (
+        <DataGrid
+          height={100}
+          getRowId={(row) => row._id}
+          rows={orders?.orders ?? []}
+          columns={columns}
+          rowCount={orders?.total || 0}
+          rowsPerPageOptions={[15, 50, 100]}
+          pagination
+          page={page}
+          pageSize={pageSize}
+          paginationMode="server"
+          sortingMode="server"
+          onPageChange={(newPage) => setPage(newPage)}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          components={{ Toolbar: DataGridCustomToolbarNoSearch }}
+
+        />
+      )}
+      </Box>
+    </>
   );
 };
 
 export default SingleClient;
+
+

@@ -3,8 +3,8 @@ import axios from "axios";
 
 const initialState = {
   users: [],
-  userLogin: localStorage.getItem("userInfo")
-    ? JSON.parse(localStorage.getItem("userInfo"))
+  userLogin: localStorage.getItem("userLogin")
+    ? JSON.parse(localStorage.getItem("userLogin"))
     : null,
   user: null,
   loading: false,
@@ -112,8 +112,7 @@ export const login = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk("users/logout", async () => {
-  localStorage.removeItem("user");
-  localStorage.removeItem("token");
+  localStorage.removeItem("userLogin"); 
 });
 
 const userSlice = createSlice({
@@ -190,7 +189,7 @@ const userSlice = createSlice({
     build.addCase(login.fulfilled, (state, action) => {
       state.loading = false;
       state.userLogin = action.payload;
-      localStorage.setItem("userInfo", JSON.stringify(state.userLogin));
+      localStorage.setItem("userLogin", JSON.stringify(state.userLogin));
     });
     build.addCase(login.rejected, (state, action) => {
       state.loading = false;
