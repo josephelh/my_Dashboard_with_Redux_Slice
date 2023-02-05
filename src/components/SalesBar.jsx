@@ -61,11 +61,9 @@ const SalesBar = () => {
       });
       setFormatedData(dataWithMonthName);
     }
-  }, [dispatch, data, year]);
+  }, [dispatch, data, year, prevYear]);
 
-  useEffect(()=> {
 
-  },[year])
 
 
   return (
@@ -117,10 +115,10 @@ const SalesBar = () => {
         axisBottom={{
           tickSize: 5,
           tickPadding: 5,
-          tickRotation: 0,
+          tickRotation: -45,
           legend: "Month",
           legendPosition: "middle",
-          legendOffset: 32,
+          legendOffset: 45,
         }}
         axisLeft={{
           tickSize: 5,
@@ -139,7 +137,7 @@ const SalesBar = () => {
             anchor: "bottom-right",
             direction: "column",
             justify: false,
-            translateX: 120,
+            translateX: 0,
             translateY: 0,
             itemsSpacing: 2,
             itemWidth: 100,
@@ -155,7 +153,7 @@ const SalesBar = () => {
         motionDamping={15}
       />
     </div>
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 120, maxWidth: 130 }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Year</InputLabel>
         <Select

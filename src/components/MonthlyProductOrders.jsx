@@ -68,12 +68,12 @@ const MonthlyProductOrders = () => {
               }}
             >
               <img
-                src={item.product_detail.image}                
-                alt={item.name}
+                src={item._id.image}                
+                alt={item._id.name}
                 loading="lazy"
               />
               <ImageListItemBar
-                title={item.name}
+                title={item._id.name}
                 subtitle={<span style={{fontSize:"15px", marginTop:"15px"}}>Purshases: {item.totalPurshases}</span>}
                 position="below"
               />
