@@ -26,14 +26,14 @@ function App() {
 
   const [admin, setAdmin] = useState(false);
 
-  const user = useSelector((state) => state.users.userLogin)
+  const userLogin = useSelector((state) => state.users.userLogin)
 
   useEffect(()=> {
-    if(user){
-      setAdmin(user.isAdmin)
+    if(userLogin){
+      setAdmin(userLogin.isAdmin)
     }
 
-  },[user])
+  },[userLogin])
 
 
    return (
@@ -43,7 +43,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route
-            element={admin ? <Layout /> : <Navigate to="/login"/>}
+            element={userLogin && admin ? <Layout /> : <Login />}
           >
             <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />

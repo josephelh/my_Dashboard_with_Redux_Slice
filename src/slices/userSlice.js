@@ -201,6 +201,8 @@ const userSlice = createSlice({
     build.addCase(logout.fulfilled, (state) => {
       state.loading = false;
       state.userLogin = null;
+      localStorage.removeItem("userLogin");
+
     });
     build.addCase(logout.rejected, (state, action) => {
       state.loading = false;

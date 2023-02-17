@@ -7,6 +7,7 @@ import {
 } from "@mui/icons-material";
 import FlexBetween from "components/FlexBetween";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { setMode } from "state";
 import profileImage from "assets/profile.jpeg";
 import {
@@ -25,6 +26,7 @@ import { logout } from "slices/userSlice";
 const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
@@ -37,6 +39,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
 
   const logoutHandler = () => {
      dispatch(logout());
+     navigate("/login");
   };
 
   return (
@@ -58,7 +61,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
         {/*RIGHT SIDE */}
         <FlexBetween gap="1.5rem">
           <IconButton onClick={changeMode}>
-            {theme.palette.mode === "dark" ? (
+            {theme.palette.mode === "dark" ? (              
               <DarkModeOutlined sx={{ fontSize: "25px" }} />
             ) : (
               <LightModeOutlined sx={{ fontSize: "25px" }} />
@@ -91,7 +94,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
                   fontSize="0.85rem"
                   sx={{ color: theme.palette.secondary[100] }}
                 >
-                  {user.name}
+                  {user?.name}
                 </Typography>                
               </Box>
               <ArrowDropDownOutlined
