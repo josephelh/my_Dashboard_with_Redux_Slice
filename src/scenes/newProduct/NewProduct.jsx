@@ -12,7 +12,7 @@ import Message from "components/Message";
 import { resetProduct, updateProduct,fetchProductDetails, resetSuccessUpdate} from "slices/singleProductSlice";
 
 const NewProduct = () => {
-  const baseUrl = "http://localhost:5001";
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
